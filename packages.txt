@@ -1,2 +1,3 @@
 graphviz
 graphviz-dev
+libtk8.6
