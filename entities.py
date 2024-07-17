@@ -31,7 +31,7 @@ df_exploded = df_filter.explode(["NER_type", "NER_text"]).dropna(subset=["NER_te
 col1, col2 = st.columns(2, gap="medium")
 
 with col1:
-    st.title("Telegram")
+    st.header("Telegram", divider="green")
     # for ner_type in list(df_exploded['NER_type'].unique()):
     #     st.title(ner_type)
     current_df_telegram = df_exploded[(df_exploded['NER_type'] == NER_type) & (df_exploded['plateforme'] =="Telegram")]
@@ -49,7 +49,7 @@ with col1:
         st.write("NO DATA")
 
 with col2:
-    st.title("Twitter")
+    st.header("Twitter", divider="blue")
     current_df_twitter = df_exploded[(df_exploded['NER_type'] == NER_type) & (df_exploded['plateforme'] =="Twitter")]
     if len(current_df_twitter) > 0:
         current_df_gb_twitter = current_df_twitter.groupby(["message_id", "NER_text"]).agg(**{"channels" : ("user_id", "nunique"), 'views': ('views', 'max'),'engagements': ('engagements', 'max'),'share': ('share', 'max'),'likes': ('likes', 'max'),'comments': ('comments', 'max')}).reset_index()

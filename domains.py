@@ -29,7 +29,7 @@ df_domains_gb = df_urls.groupby(["plateforme", "domain"]).agg(**metrics).reset_i
 col1, col2 = st.columns(2, gap="medium")
 
 with col1:
-    st.title("Telegram")
+    st.header("Telegram", divider="green")
     st.subheader("Top URLs")
     if len(df_urls_gb[df_urls_gb['plateforme']=="Telegram"]) >0:
         for i, row in df_urls_gb[df_urls_gb['plateforme']=="Telegram"].sort_values(by=sort_by, ascending=False).head(nb_urls).iterrows():
@@ -47,7 +47,7 @@ with col1:
 
 
 with col2:
-    st.title("Twitter")
+    st.header("Twitter", divider="blue")
     st.subheader("Top URLs")
     if len(df_urls_gb[df_urls_gb['plateforme']=="Twitter"]) >0:
         for i, row in df_urls_gb[df_urls_gb['plateforme']=="Twitter"].sort_values(by=sort_by, ascending=False).head(nb_urls).iterrows():

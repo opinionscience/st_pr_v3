@@ -72,7 +72,7 @@ else :
 col1, col2 = st.columns(2, gap="medium")
 
 with col1:
-    st.title("Telegram")
+    st.header("Telegram", divider="green")
     sub_col1, sub_col2, sub_col3, sub_col4 = st.columns(4, gap="small")
 
     with sub_col1:
@@ -94,7 +94,7 @@ with col1:
     else:
         st.write("NO DATA")
 with col2:
-    st.title("Twitter")
+    st.header("Twitter", divider="blue")
     t_sub_col1, t_sub_col2, t_sub_col3, t_sub_col4 = st.columns(4, gap="small")
 
     with t_sub_col1:
