@@ -1,0 +1,59 @@
+import streamlit as st
+from eldar import Query
+import pandas as pd
+from lib.helpers import format_number
+
+sort_by = st.sidebar.selectbox("Sort by", ["posts", "engagements", "views"], index=0)
+nb_users = st.sidebar.number_input("Number of Top Users",value = 10)
+
+
+date = st.session_state['date']
+txt_query = st.session_state['txt_query']
+ignore_case = st.session_state['ignore_case']
+ignore_accent = st.session_state['ignore_accent']
+match_word = st.session_state['match_word']
+df = st.session_state['df']
+df_filter = st.session_state['df_filter']
+
+# df = df[(df['datetime'] >= date[0]) & (df['datetime'] <= date[1])]
+
+
+# df_twitter = df[df['plateforme']=="Twitter"].reset_index(drop=True)
+# df_telegram = df[df['plateforme']=="Telegram"].reset_index(drop=True)
+
+# boolean_query = Query(txt_query, ignore_case=ignore_case, ignore_accent=ignore_accent, match_word=match_word)
+# df_telegram = df_telegram[df_telegram["translated_text"].apply(boolean_query)]
+# df_twitter = df_twitter[df_twitter["translated_text"].apply(boolean_query)]
+
+# df_new = pd.concat([df_telegram, df_twitter]).reset_index()
+
+df_twitter = df_filter[df_filter['plateforme']=="Twitter"].reset_index(drop=True)
+df_telegram = df_filter[df_filter['plateforme']=="Telegram"].reset_index(drop=True)
+
+metrics = {
+'posts' : ('message_id',"nunique"),
+'views': ('views', 'sum'),
+'engagements': ('engagements', 'sum'),
+'share': ('share', 'sum'),
+'likes': ('likes', 'sum'),
+'comments': ('comments', 'sum')
+}
+
+df_users_telegram = df_telegram.groupby(["user_id", 'user_name']).agg(**metrics).reset_index()
+df_users_twitter= df_twitter.groupby(["user_id", 'user_name']).agg(**metrics).reset_index()
+
+col1, col2 = st.columns(2, gap="medium")
+
+with col1:
+    st.title("Telegram")
+    st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
+    for i, row in df_users_telegram.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
+        card=f'<div class="card"><div class="card-header d-flex justify-content-between"><div class="col"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF; color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b>{row["user_name"]}</b></h5></div><div class="col d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-message fa-xs"></i> {format_number(row["posts"])}</div><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div></div></div></div><br/>'
+        st.markdown(card, unsafe_allow_html= True)
+
+with col2:
+    st.title("Twitter")
+    st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
+    for i, row in df_users_twitter.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
+        card=f'<div class="card"><div class="card-header d-flex justify-content-between"><div class="col"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF; color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b><a href="https://www.twitter.com/{row["user_name"]}">{row["user_name"]}</a></b></h5></div><div class="col d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-message fa-xs"></i> {format_number(row["posts"])}</div><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div></div></div></div><br/>'
+        st.markdown(card, unsafe_allow_html= True)
