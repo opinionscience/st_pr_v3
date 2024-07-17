@@ -11,7 +11,7 @@ match_word = st.session_state['match_word']
 df = st.session_state['df']
 df_filter = st.session_state['df_filter']
 
-NER_type = st.sidebar.selectbox("Entity Type", ['Organizations', "Persons", "Locations"], index = 0)
+NER_type = st.sidebar.selectbox("Entity Type", ["Persons", 'Organizations',"Locations"], index = 0)
 
 NER_type = {'Organizations': 'ORG', 'Persons': 'PERSON', 'Locations': 'LOC'}.get(NER_type)
 
@@ -34,32 +34,32 @@ with col1:
     st.title("Telegram")
     # for ner_type in list(df_exploded['NER_type'].unique()):
     #     st.title(ner_type)
-    current_df = df_exploded[(df_exploded['NER_type'] == NER_type) & (df_exploded['plateforme'] =="Telegram")]
-    if len(current_df) > 0:
-        current_df_gb = current_df.groupby(["message_id", "NER_text"]).agg(**{"channels" : ("user_id", "nunique"), 'views': ('views', 'max'),'engagements': ('engagements', 'max'),'share': ('share', 'max'),'likes': ('likes', 'max'),'comments': ('comments', 'max')}).reset_index()
-        current_df_gb = current_df_gb.groupby(["NER_text"]).agg(**metrics).reset_index().sort_values(by="posts", ascending=False)
-        wc = generate_wordcloud(current_df_gb.head(200), "NER_text", "posts", width=3000, height=1500, dpi=72, show=False, colormap="viridis", font_path="font/InriaSans-Bold.ttf")
+    current_df_telegram = df_exploded[(df_exploded['NER_type'] == NER_type) & (df_exploded['plateforme'] =="Telegram")]
+    if len(current_df_telegram) > 0:
+        current_df_gb_telegram = current_df_telegram.groupby(["message_id", "NER_text"]).agg(**{"channels" : ("user_id", "nunique"), 'views': ('views', 'max'),'engagements': ('engagements', 'max'),'share': ('share', 'max'),'likes': ('likes', 'max'),'comments': ('comments', 'max')}).reset_index()
+        current_df_gb_telegram = current_df_gb_telegram.groupby(["NER_text"]).agg(**metrics).reset_index().sort_values(by="posts", ascending=False)
+        wc = generate_wordcloud(current_df_gb_telegram.head(200), "NER_text", "posts", width=3000, height=1500, dpi=72, show=False, colormap="viridis", font_path="font/InriaSans-Bold.ttf")
         fig = plt.figure(figsize=(10,5))
         plt.imshow(wc, interpolation = "bilinear")
         plt.axis('off')
         st.pyplot(fig)
-        fig_bar_entities = fig_bar_trend(current_df_gb.head(25), "NER_text", "posts", "engagements", xaxis_title="", yaxis_title= "Verbatims", zaxis_title = "Engagements", col_hover=["channels", "views", "engagements", "share", "likes", "comments"], height=500, showlegend=False, mode="lines", xaxis_tickangle=-45, marker_line_width=2, marker_line_color="#6dff00", marker_color="#a7ff66", title_text="Coverage & Resonance", yaxis_range="auto", zaxis_range="auto")
+        fig_bar_entities = fig_bar_trend(current_df_gb_telegram.head(25), "NER_text", "posts", "engagements", xaxis_title="", yaxis_title= "Verbatims", zaxis_title = "Engagements", col_hover=["channels", "views", "engagements", "share", "likes", "comments"], height=500, showlegend=False, mode="lines", xaxis_tickangle=-45, marker_line_width=2, marker_line_color="#6dff00", marker_color="#a7ff66", title_text="Coverage & Resonance", yaxis_range="auto", zaxis_range="auto")
         st.write(fig_bar_entities)
     else:
         st.write("NO DATA")
 
 with col2:
     st.title("Twitter")
-    current_df = df_exploded[(df_exploded['NER_type'] == NER_type) & (df_exploded['plateforme'] =="Twitter")]
-    if len(current_df) > 0:
-        current_df_gb = current_df.groupby(["message_id", "NER_text"]).agg(**{"channels" : ("user_id", "nunique"), 'views': ('views', 'max'),'engagements': ('engagements', 'max'),'share': ('share', 'max'),'likes': ('likes', 'max'),'comments': ('comments', 'max')}).reset_index()
-        current_df_gb = current_df_gb.groupby(["NER_text"]).agg(**metrics).reset_index().sort_values(by="posts", ascending=False)
-        wc = generate_wordcloud(current_df_gb.head(200), "NER_text", "posts", width=3000, height=1500, dpi=72, show=False, colormap="viridis", font_path="font/InriaSans-Bold.ttf")
+    current_df_twitter = df_exploded[(df_exploded['NER_type'] == NER_type) & (df_exploded['plateforme'] =="Twitter")]
+    if len(current_df_twitter) > 0:
+        current_df_gb_twitter = current_df_twitter.groupby(["message_id", "NER_text"]).agg(**{"channels" : ("user_id", "nunique"), 'views': ('views', 'max'),'engagements': ('engagements', 'max'),'share': ('share', 'max'),'likes': ('likes', 'max'),'comments': ('comments', 'max')}).reset_index()
+        current_df_gb_twitter = current_df_gb_twitter.groupby(["NER_text"]).agg(**metrics).reset_index().sort_values(by="posts", ascending=False)
+        wc = generate_wordcloud(current_df_gb_twitter.head(200), "NER_text", "posts", width=3000, height=1500, dpi=72, show=False, colormap="viridis", font_path="font/InriaSans-Bold.ttf")
         fig = plt.figure(figsize=(10,5))
         plt.imshow(wc, interpolation = "bilinear")
         plt.axis('off')
         st.pyplot(fig)
-        fig_bar_entities = fig_bar_trend(current_df_gb.head(25), "NER_text", "posts", "engagements", xaxis_title="", yaxis_title= "Verbatims", zaxis_title = "Engagements", col_hover=["channels", "views", "engagements", "share", "likes", "comments"], height=500, showlegend=False, mode="lines", xaxis_tickangle=-45, marker_line_width=2, marker_line_color="#00ecff", marker_color="#66f3ff", title_text="Coverage & Resonance", yaxis_range="auto", zaxis_range="auto")
+        fig_bar_entities = fig_bar_trend(current_df_gb_twitter.head(25), "NER_text", "posts", "engagements", xaxis_title="", yaxis_title= "Verbatims", zaxis_title = "Engagements", col_hover=["channels", "views", "engagements", "share", "likes", "comments"], height=500, showlegend=False, mode="lines", xaxis_tickangle=-45, marker_line_width=2, marker_line_color="#00ecff", marker_color="#66f3ff", title_text="Coverage & Resonance", yaxis_range="auto", zaxis_range="auto")
         st.write(fig_bar_entities)
     else:
         st.write("NO DATA")
