@@ -38,7 +38,7 @@ with col1:
     if len(current_df) > 0:
         current_df_gb = current_df.groupby(["message_id", "NER_text"]).agg(**{"channels" : ("user_id", "nunique"), 'views': ('views', 'max'),'engagements': ('engagements', 'max'),'share': ('share', 'max'),'likes': ('likes', 'max'),'comments': ('comments', 'max')}).reset_index()
         current_df_gb = current_df_gb.groupby(["NER_text"]).agg(**metrics).reset_index().sort_values(by="posts", ascending=False)
-        wc = generate_wordcloud(current_df_gb.head(200), "NER_text", "posts", width=3000, height=1500, dpi=72, show=False, colormap="viridis", font_path="/font/InriaSans-Bold.ttf")
+        wc = generate_wordcloud(current_df_gb.head(200), "NER_text", "posts", width=3000, height=1500, dpi=72, show=False, colormap="viridis", font_path="font/InriaSans-Bold.ttf")
         fig = plt.figure(figsize=(10,5))
         plt.imshow(wc, interpolation = "bilinear")
         plt.axis('off')
