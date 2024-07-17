@@ -61,7 +61,7 @@ df_filter['color'] = df_filter['plateforme'].map(plateforme_color_palette)
 ###############################################
 # KEY METRICS
 ###############################################
-
+st.header("Explorer", divider="rainbow")
 # fig = px.line(df_trends_channels, x='datetime', y='posts', color='plateforme')
 if len(df_filter)>0:
     fig = line_per_cat(df_filter, "datetime", "posts", "plateforme", plateforme_color_palette, xaxis_title="Date", yaxis_title="Posts", title_text="Posts per day", col_hover=["views", "engagements", "share", "likes", "comments"], height=500)

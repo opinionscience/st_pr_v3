@@ -35,7 +35,7 @@ df_twitter = df_filter[df_filter['plateforme']=="Twitter"].reset_index(drop=True
 df_telegram = df_filter[df_filter['plateforme']=="Telegram"].reset_index(drop=True)
 
 df_stopwords = load_stopwords_df("en")
-
+st.header("Semantic analysis", divider="rainbow")
 datasets = {"Telegram" :df_telegram, "Twitter": df_twitter}
 for title, dataset in datasets.items():
     if len(dataset) > 0:
