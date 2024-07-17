@@ -26,7 +26,7 @@ metrics = {
 'channels' : ('channels', 'sum')
 }
 
-df_exploded = df_filter.explode(["NER_type", "NER_text", "NER_start_char", "NER_end_char"]).dropna(subset=["NER_text"]).reset_index(drop=True)
+df_exploded = df_filter.explode(["NER_type", "NER_text"]).dropna(subset=["NER_text"]).reset_index(drop=True)
 
 col1, col2 = st.columns(2, gap="medium")
 
