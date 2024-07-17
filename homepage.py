@@ -29,8 +29,7 @@ def main():
 
     pg = st.navigation([explorer_page, topics_page, entities_page,user_analytics_page, domains_page])
    
-    df = load_data("data/20240717_df_with_minilm_embeddings.pickle")
-    # df = load_parquet("data/20240715_df_with_embeddings.parquet")
+    df = load_data("data/20240717_df_light.pickle")
 
 
     plateforme_color_palette = read_json("data/plateforme_color_palette.json")
