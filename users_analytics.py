@@ -46,14 +46,20 @@ col1, col2 = st.columns(2, gap="medium")
 
 with col1:
     st.title("Telegram")
-    st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
-    for i, row in df_users_telegram.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
-        card=f'<div class="card"><div class="card-header d-flex justify-content-between"><div class="col"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF; color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b>{row["user_name"]}</b></h5></div><div class="col d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-message fa-xs"></i> {format_number(row["posts"])}</div><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div></div></div></div><br/>'
-        st.markdown(card, unsafe_allow_html= True)
+    if len(df_users_telegram) > 0:
+        st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
+        for i, row in df_users_telegram.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
+            card=f'<div class="card"><div class="card-header d-flex justify-content-between"><div class="col"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF; color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b>{row["user_name"]}</b></h5></div><div class="col d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-message fa-xs"></i> {format_number(row["posts"])}</div><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div></div></div></div><br/>'
+            st.markdown(card, unsafe_allow_html= True)
+    else:
+        st.write("NO DATA")
 
 with col2:
     st.title("Twitter")
-    st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
-    for i, row in df_users_twitter.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
-        card=f'<div class="card"><div class="card-header d-flex justify-content-between"><div class="col"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF; color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b><a href="https://www.twitter.com/{row["user_name"]}">{row["user_name"]}</a></b></h5></div><div class="col d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-message fa-xs"></i> {format_number(row["posts"])}</div><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div></div></div></div><br/>'
-        st.markdown(card, unsafe_allow_html= True)
+    if len(df_users_twitter) > 0:
+        st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
+        for i, row in df_users_twitter.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
+            card=f'<div class="card"><div class="card-header d-flex justify-content-between"><div class="col"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF; color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b><a href="https://www.twitter.com/{row["user_name"]}">{row["user_name"]}</a></b></h5></div><div class="col d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-message fa-xs"></i> {format_number(row["posts"])}</div><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div></div></div></div><br/>'
+            st.markdown(card, unsafe_allow_html= True)
+    else:
+        st.write("NO DATA")

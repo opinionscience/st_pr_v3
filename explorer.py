@@ -63,8 +63,11 @@ df_filter['color'] = df_filter['plateforme'].map(plateforme_color_palette)
 ###############################################
 
 # fig = px.line(df_trends_channels, x='datetime', y='posts', color='plateforme')
-fig = line_per_cat(df_filter, "datetime", "posts", "plateforme", plateforme_color_palette, xaxis_title="Date", yaxis_title="Posts", title_text="Posts per day", col_hover=["views", "engagements", "share", "likes", "comments"], height=500)
-st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+if len(df_filter)>0:
+    fig = line_per_cat(df_filter, "datetime", "posts", "plateforme", plateforme_color_palette, xaxis_title="Date", yaxis_title="Posts", title_text="Posts per day", col_hover=["views", "engagements", "share", "likes", "comments"], height=500)
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+else : 
+    st.write("NO DATA")
 
 col1, col2 = st.columns(2, gap="medium")
 
@@ -84,9 +87,12 @@ with col1:
         card = f'<div class="card"><div class="card-body"><div class="row align-items-center"><div class="col"><h8 class="card-title text-uppercase text-muted mb-2">Engagements</h8><div class ="h2 mb-0">{format_number(df_telegram["engagements"].nunique())}</div></div></div></div></div>'
         st.markdown(card, unsafe_allow_html= True)
     st.markdown("<hr>", unsafe_allow_html= True)
-    for i, row in df_telegram.sort_values(by=sort_by, ascending=False).head(nb_verbatims).iterrows():
-        card=f'<div class="card"><div class="card-header bg-success bg-opacity-25 d-flex justify-content-between"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #b1b1b1;  color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b>{row["user_name"]}</b></h5><div class="p-2"></div><div class="p-2"><i class="fa-regular fa-clock fa-xs"></i> {row["date"].strftime("%d/%m/%y")}</div></div><div class="card-body"><p class="card-text">{row["translated_text"]}</p></div><div class="card-footer d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div><div class="p-2"><i class="fa-solid fa-retweet fa-xs"></i> {format_number(row["share"])}</div><div class="p-2"><i class="fas fa-heart  fa-xs"></i> {format_number(row["likes"])}</div><div class="p-2"><i class="fas fa-comments fa-xs"></i> {format_number(row["comments"])}</div></div></div><br/>'
-        st.markdown(card, unsafe_allow_html= True)
+    if len(df_telegram)>0:
+        for i, row in df_telegram.sort_values(by=sort_by, ascending=False).head(nb_verbatims).iterrows():
+            card=f'<div class="card"><div class="card-header bg-success bg-opacity-25 d-flex justify-content-between"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #b1b1b1;  color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b>{row["user_name"]}</b></h5><div class="p-2"></div><div class="p-2"><i class="fa-regular fa-clock fa-xs"></i> {row["date"].strftime("%d/%m/%y")}</div></div><div class="card-body"><p class="card-text">{row["translated_text"]}</p></div><div class="card-footer d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div><div class="p-2"><i class="fa-solid fa-retweet fa-xs"></i> {format_number(row["share"])}</div><div class="p-2"><i class="fas fa-heart  fa-xs"></i> {format_number(row["likes"])}</div><div class="p-2"><i class="fas fa-comments fa-xs"></i> {format_number(row["comments"])}</div></div></div><br/>'
+            st.markdown(card, unsafe_allow_html= True)
+    else:
+        st.write("NO DATA")
 with col2:
     st.title("Twitter")
     t_sub_col1, t_sub_col2, t_sub_col3, t_sub_col4 = st.columns(4, gap="small")
@@ -103,6 +109,9 @@ with col2:
         card = f'<div class="card"><div class="card-body"><div class="row align-items-center"><div class="col"><h8 class="card-title text-uppercase text-muted mb-2">Engagements</h8><div class ="h2 mb-0">{format_number(df_twitter["engagements"].nunique())}</div></div></div></div></div>'
         st.markdown(card, unsafe_allow_html= True)
     st.markdown("<hr>", unsafe_allow_html= True)
-    for i, row in df_twitter.sort_values(by=sort_by, ascending=False).head(nb_verbatims).iterrows():
-        card=f'<div class="card"><div class="card-header bg-info bg-opacity-25 d-flex justify-content-between"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF;  color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b>{row["user_name"]}</b></h5><div class="p-2"></div><div class="p-2"><i class="fa-regular fa-clock fa-xs"></i> <a href="https://www.twitter.com/{row["user_name"]}/status/{row["message_id"]}">{row["date"].strftime("%d/%m/%y")}</a></div></div><div class="card-body"><p class="card-text">{row["translated_text"]}</p></div><div class="card-footer d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div><div class="p-2"><i class="fa-solid fa-retweet fa-xs"></i> {format_number(row["share"])}</div><div class="p-2"><i class="fas fa-heart  fa-xs"></i> {format_number(row["likes"])}</div><div class="p-2"><i class="fas fa-comments fa-xs"></i> {format_number(row["comments"])}</div></div></div><br/>'
-        st.markdown(card, unsafe_allow_html= True)
+    if len(df_twitter)>0:
+        for i, row in df_twitter.sort_values(by=sort_by, ascending=False).head(nb_verbatims).iterrows():
+            card=f'<div class="card"><div class="card-header bg-info bg-opacity-25 d-flex justify-content-between"><h5 class="p-2"><span style=" display: inline-block;width: 30px;height: 30px;background-color: #0099EF;  color: white;border-radius: 50%; text-align: center;line-height: 30px;font-size: 16px;margin-right: 10px;font-weight: bold;">{row["user_name"][0]}</span><b>{row["user_name"]}</b></h5><div class="p-2"></div><div class="p-2"><i class="fa-regular fa-clock fa-xs"></i> <a href="https://www.twitter.com/{row["user_name"]}/status/{row["message_id"]}">{row["date"].strftime("%d/%m/%y")}</a></div></div><div class="card-body"><p class="card-text">{row["translated_text"]}</p></div><div class="card-footer d-flex justify-content-between"><div class="p-2"><i class="fa-solid fa-chart-column fa-xs"></i> {format_number(row["engagements"])}</div><div class="p-2"><i class="fa-regular fa-eye fa-xs"></i> {format_number(row["views"])}</div><div class="p-2"><i class="fa-solid fa-retweet fa-xs"></i> {format_number(row["share"])}</div><div class="p-2"><i class="fas fa-heart  fa-xs"></i> {format_number(row["likes"])}</div><div class="p-2"><i class="fas fa-comments fa-xs"></i> {format_number(row["comments"])}</div></div></div><br/>'
+            st.markdown(card, unsafe_allow_html= True)
+    else:
+        st.write("NO DATA")
