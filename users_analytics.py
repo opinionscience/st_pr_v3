@@ -45,7 +45,7 @@ df_users_twitter= df_twitter.groupby(["user_id", 'user_name']).agg(**metrics).re
 col1, col2 = st.columns(2, gap="medium")
 
 with col1:
-    st.title("Telegram")
+    st.header("Telegram", divider="green")
     if len(df_users_telegram) > 0:
         st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
         for i, row in df_users_telegram.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
@@ -64,7 +64,7 @@ with col1:
         st.write("NO DATA")
 
 with col2:
-    st.title("Twitter")
+    st.header("Twitter", divider="blue")
     if len(df_users_twitter) > 0:
         st.write("<h3>Top Publishers</h3>", unsafe_allow_html=True)
         for i, row in df_users_twitter.sort_values(by=sort_by, ascending=False).head(nb_users).iterrows():
