@@ -4,6 +4,16 @@ import plotly.graph_objects as go
 import pandas as pd
 from plotly.subplots import make_subplots
 
+def check_engagement_type(type_eng):
+    if type_eng == 'sur reaction totale':
+        return  f'<div class="p-2"><span>🔥</span><span>🎯</span></div>'
+    elif type_eng == 'sur-engagements':
+        return  f'<div class="p-2" ><span>🔥</span><span style="color: grey; filter: grayscale(100%);">🎯</span></div>'
+    elif type_eng == 'sur-views':
+        return f'<div class="p-2" ><span style="color: grey; filter: grayscale(100%);">🔥</span><span >🎯</span></div>'
+    else:
+        return f'<div class="p-2" style="color: grey; filter: grayscale(100%);"><span>🔥</span><span>🎯</span></div>'
+
 # def fig_horizontal_bar_trend(df: pd.DataFrame, col_x: str, col_bar: str, col_trend: str, **kwargs) -> go.Figure:
 #     """
 #     Display a graph that combines bar and trend chart to compare 2 metrics.
